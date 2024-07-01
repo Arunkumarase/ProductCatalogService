@@ -1,0 +1,12 @@
+3 ways we can connect to third party API
+
+1. Rest template
+2. Web Client
+3. Feign Client
+4. Apache http client
+
+Sync call or blocking call and Async call
+
+There are 2 reactive programming
+1. flux
+2. mono
