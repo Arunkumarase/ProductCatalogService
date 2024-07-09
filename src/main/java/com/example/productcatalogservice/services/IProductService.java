@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IProductService {
     List<Product> getAllProducts();
-    Flux<Product> getAllProducts1();
+    /*Flux<Product> getAllProducts1();*/
 
     Product getProduct(Long productId);
 

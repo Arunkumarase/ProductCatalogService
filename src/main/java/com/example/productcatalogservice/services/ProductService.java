@@ -5,6 +5,7 @@ import com.example.productcatalogservice.dtos.ProductDto;
 import com.example.productcatalogservice.models.Category;
 import com.example.productcatalogservice.models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+//@Primary
 public class ProductService implements IProductService {
     private RestTemplateBuilder restTemplateBuilder;
 
@@ -108,7 +110,9 @@ public class ProductService implements IProductService {
 
     @Override
     public String deleteProduct(Long id) {
-        ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity = deleteEntity(
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity =
+                deleteEntity(
                 "https://fakestoreapi.com/products/{id}",
                 FakeStoreProductDto.class
         );

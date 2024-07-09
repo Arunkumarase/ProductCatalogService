@@ -1,5 +1,7 @@
 package com.example.productcatalogservice.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -15,6 +17,7 @@ import java.util.List;
 public class Category extends BaseModel{
     private String name;
     private String description;
+    @JsonBackReference
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 }
