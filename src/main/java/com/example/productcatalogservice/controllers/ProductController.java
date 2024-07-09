@@ -12,16 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/product-service/api/v1/products")
 public class ProductController {
 
-    IProductService iProductService;
+    private IProductService productService;
+
     public ProductController(IProductService iProductService){
-        this.iProductService = iProductService;
+        this.productService = iProductService;
     }
     @GetMapping
     public List<Product> getAllProducts(){
-        return iProductService.getAllProducts();
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
@@ -33,7 +34,7 @@ public class ProductController {
                 throw new IllegalArgumentException("Id is invalid");
             }
             headers.add("product remarks","valid productId");
-            Product product =  iProductService.getProduct(productId);
+            Product product =  productService.getProduct(productId);
             return new ResponseEntity<>(product,headers,HttpStatus.OK);
         } catch (Exception ex) {
             //return new ResponseEntity<>(ex.getMessage(),headers,HttpStatus.BAD_REQUEST);
@@ -42,33 +43,29 @@ public class ProductController {
 
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public Product createProduct(@RequestBody ProductDto productDto){
-        return iProductService.createProduct(getProductFromDto(productDto));
+        return productService.createProduct(ProductVoAdapterUtil.bindProductFromVo(productDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> replaceProduct(@PathVariable("id") Long productId, @RequestBody ProductDto productDto){
-        return new ResponseEntity<>(iProductService.replaceProduct(productId,getProductFromDto(productDto)), HttpStatus.OK);
+    public ResponseEntity<Product> replaceProduct(
+            @PathVariable("id") Long productId,
+            @RequestBody ProductDto productDto
+    ){
+        return new ResponseEntity<>(
+                productService.replaceProduct(
+                        productId,ProductVoAdapterUtil.bindProductFromVo(productDto)
+                ), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable("id") Long productId) {
-        return iProductService.deleteProduct(productId);
+        return productService.deleteProduct(productId);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
-    public ResponseEntity<String> ExceptionHandle(Exception ex) {
+    public ResponseEntity<String> exceptionHandle(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    private Product getProductFromDto(ProductDto productDto){
-        Product product = new Product();
-        product.setName(productDto.getName());
-        product.setImageUrl(productDto.getImageUrl());
-        product.setPrice(productDto.getPrice());
-        product.setDescription(productDto.getDescription());
-        product.setCategory(product.getCategory());
-        return product;
     }
 }

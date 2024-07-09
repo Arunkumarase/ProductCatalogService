@@ -10,3 +10,9 @@ Sync call or blocking call and Async call
 There are 2 reactive programming
 1. flux
 2. mono
+
+Power Mock is used to test private method
+
+Unit Test principle:
+1. My each piece of code can run at any point of time
+2.
