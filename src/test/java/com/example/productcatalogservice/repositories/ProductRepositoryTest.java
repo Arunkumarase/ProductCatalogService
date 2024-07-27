@@ -20,9 +20,10 @@ class ProductRepositoryTest {
     @Transactional
     void testQueries() {
         //List<Product> productList = productRepository.findProductByPriceBetween(0.00,1000.00);
-        List<Product> productList = productRepository.findAllByOrderByNameDesc();
-        productList.forEach(product -> System.out.println(product.getName().toString()));
-
+        /*List<Product> productList = productRepository.findAllByOrderByNameDesc();
+        productList.forEach(product -> System.out.println(product.getName().toString()));*/
+        //System.out.println(productRepository.getProductNameById(1L));
+        System.out.println(productRepository.getCategoryNameFromProductId(4L));
     }
 
 }
